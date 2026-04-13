@@ -389,54 +389,123 @@ iframe {
 /* MOBILE */
 @media (max-width: 600px) {
 
-  .navbar {
+    /* HAMBURGER BUTTON */
+  .hamburger {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
     flex-direction: column;
-    gap: 8px;
-    padding: 10px;
+    gap: 5px;
+    padding: 8px;
   }
 
+  .hamburger span {
+    width: 26px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    display: block;
+  }
+
+  /* DESKTOP NAV */
   .nav-buttons {
-    justify-content: center;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
-  .navbar button {
-    padding: 7px 10px;
-    font-size: 12px;
+  /* OVERLAY */
+  .menu-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 150;
   }
 
-  .hero-overlay h1 {
-    font-size: 24px;
-  }
+  /* RIGHT DRAWER FOR MOBILE */
+  @media (max-width: 600px) {
+    .navbar {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+    }
 
-  .hero-overlay p {
-    font-size: 14px;
-  }
+    .hamburger {
+      display: flex;
+      z-index: 201;
+    }
 
-  .page-title h1 {
-    font-size: 24px;
-  }
+    .nav-buttons {
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 240px;
+      height: 100vh;
+      background: rgba(31, 45, 36, 0.98);
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      padding: 80px 16px 16px;
+      gap: 12px;
+      transition: right 0.3s ease;
+      z-index: 200;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.25);
+    }
 
-  .card {
-    width: 95%;
-    padding: 15px;
-  }
+    .nav-buttons.open {
+      right: 0;
+    }
 
-  .flip-card {
-    width: 85vw;
-    height: 260px;
-  }
+    .nav-buttons button {
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      font-size: 15px;
+      border-radius: 12px;
+    }
 
-  .services-grid {
-    grid-template-columns: 1fr;
-    width: 95%;
-  }
+    .menu-overlay.show {
+      display: block;
+    }
 
-  .contact-wrapper {
-    grid-template-columns: 1fr;
-  }
+    .hero-overlay h1 {
+      font-size: 24px;
+    }
 
-  iframe {
-    height: 250px;
+    .hero-overlay p {
+      font-size: 14px;
+    }
+
+    .page-title h1 {
+      font-size: 24px;
+    }
+
+    .card {
+      width: 95%;
+      padding: 15px;
+    }
+
+    .flip-card {
+      width: 85vw;
+      height: 260px;
+    }
+
+    .services-grid {
+      grid-template-columns: 1fr;
+      width: 95%;
+    }
+
+    .contact-wrapper {
+      grid-template-columns: 1fr;
+    }
+
+    iframe {
+      height: 250px;
+    }
   }
 }
 </style>
@@ -447,13 +516,22 @@ iframe {
 <!-- NAVBAR -->
 <div class="navbar">
   <div class="logo">🌿 Kampung Sungai Melayu</div>
-  <div class="nav-buttons">
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('about')">About</button>
-    <button onclick="showPage('services')">Locals</button>
-    <button onclick="showPage('contact')">Contact</button>
+
+  <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="nav-buttons" id="navMenu">
+    <button onclick="showPage('home'); closeMenu()">Home</button>
+    <button onclick="showPage('about'); closeMenu()">About</button>
+    <button onclick="showPage('services'); closeMenu()">Locals</button>
+    <button onclick="showPage('contact'); closeMenu()">Contact</button>
   </div>
 </div>
+
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
 <!-- HOME -->
 <div id="home" class="page active">
@@ -749,28 +827,43 @@ iframe {
 </div>
 
 <script>
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-  window.scrollTo(0, 0);
-}
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    window.scrollTo(0, 0);
+  }
 
-// Tap to flip on touchscreens
-document.querySelectorAll('.flip-card').forEach(card => {
-  card.addEventListener('click', () => {
-    card.classList.toggle('flipped');
+  function toggleMenu() {
+    const menu = document.getElementById('navMenu');
+    const overlay = document.getElementById('menuOverlay');
+    const button = document.querySelector('.hamburger');
+    const isOpen = menu.classList.toggle('open');
+
+    overlay.classList.toggle('show', isOpen);
+    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  function closeMenu() {
+    document.getElementById('navMenu').classList.remove('open');
+    document.getElementById('menuOverlay').classList.remove('show');
+    document.querySelector('.hamburger').setAttribute('aria-expanded', 'false');
+  }
+
+  document.querySelectorAll('.flip-card').forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.toggle('flipped');
+    });
   });
-});
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      entry.target.classList.add('show');
-    }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+      }
+    });
   });
-});
 
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 
 </body>
