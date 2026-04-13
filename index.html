@@ -212,12 +212,12 @@ iframe {
 
 /* Desktop: hover to flip */
 @media (hover: hover) {
-  .flip-card:hover {
-    transform: rotateY(180deg) translateY(-6px);
-    box-shadow:
-      0 15px 30px rgba(0,0,0,0.12),
-      0 0 20px rgba(76, 175, 80, 0.35);
-  }
+    .flip-card:hover {
+      transform: rotateY(180deg) translateY(-6px);
+      box-shadow:
+        0 15px 30px rgba(0,0,0,0.12),
+        0 0 20px rgba(76, 175, 80, 0.35);
+    }
 }
 
 /* Mobile: tap to flip via JS class */
@@ -385,48 +385,9 @@ iframe {
   cursor: pointer;
   font-size: 15px;
 }
-
 /* MOBILE */
 @media (max-width: 600px) {
 
-    /* HAMBURGER BUTTON */
-  .hamburger {
-    display: none;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    flex-direction: column;
-    gap: 5px;
-    padding: 8px;
-  }
-
-  .hamburger span {
-    width: 26px;
-    height: 3px;
-    background: white;
-    border-radius: 2px;
-    display: block;
-  }
-
-  /* DESKTOP NAV */
-  .nav-buttons {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  /* OVERLAY */
-  .menu-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    z-index: 150;
-  }
-
-  /* RIGHT DRAWER FOR MOBILE */
-  @media (max-width: 600px) {
     .navbar {
       flex-direction: row;
       justify-content: space-between;
@@ -436,9 +397,37 @@ iframe {
 
     .hamburger {
       display: flex;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
       z-index: 201;
     }
 
+    .hamburger span {
+      width: 26px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+      transition: 0.3s ease;
+    }
+
+/* X animation */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+    /* NAV DRAWER */
     .nav-buttons {
       position: fixed;
       top: 0;
@@ -468,10 +457,20 @@ iframe {
       border-radius: 12px;
     }
 
+    /* OVERLAY */
+    .menu-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 150;
+    }
+
     .menu-overlay.show {
       display: block;
     }
 
+    /* TEXT SCALING */
     .hero-overlay h1 {
       font-size: 24px;
     }
@@ -506,7 +505,77 @@ iframe {
     iframe {
       height: 250px;
     }
+
+    body {
+    font-size: 14px;
   }
+
+  .logo {
+    font-size: 13px;
+  }
+
+  .navbar {
+    padding: 10px 12px;
+    backdrop-filter: blur(12px);
+  }
+
+  .hero-overlay h1 {
+    font-size: 22px;
+  }
+
+  .hero-overlay p {
+    font-size: 13px;
+  }
+
+  .hero-overlay button {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .card {
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+
+  .nav-buttons button {
+    font-size: 14px;
+    border-radius: 10px;
+  }
+  .page {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .nav-buttons {
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+  }
+
+  .nav-buttons button {
+    transition: 0.2s ease;
+  }
+
+  .nav-buttons button:active {
+    transform: scale(0.97);
+    background: rgba(76, 175, 80, 0.2);
+  }
+
+  .service-card:active {
+    transform: scale(0.98);
+  }
+}
+
+.page {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: 0.4s ease;
+  display: none;
+}
+
+.page.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+
 }
 </style>
 </head>
@@ -517,7 +586,7 @@ iframe {
 <div class="navbar">
   <div class="logo">🌿 Kampung Sungai Melayu</div>
 
-  <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" onclick="toggleMenu()">
+  <button class="hamburger" aria-label="Open navigation menu" aria-expanded="false" onclick="toggleMenu(this)">
     <span></span>
     <span></span>
     <span></span>
@@ -827,25 +896,52 @@ iframe {
 </div>
 
 <script>
-  function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-    window.scrollTo(0, 0);
-  }
+ 
+ function showPage(pageId) {
+  const pages = document.querySelectorAll('.page');
 
-  function toggleMenu() {
+  pages.forEach(p => {
+    p.style.opacity = 0;
+    p.style.transform = "translateY(10px)";
+    setTimeout(() => p.classList.remove('active'), 200);
+  });
+
+  const target = document.getElementById(pageId);
+  target.classList.add('active');
+
+  setTimeout(() => {
+    target.style.opacity = 1;
+    target.style.transform = "translateY(0)";
+  }, 50);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+  function toggleMenu(btn) {
     const menu = document.getElementById('navMenu');
     const overlay = document.getElementById('menuOverlay');
-    const button = document.querySelector('.hamburger');
-    const isOpen = menu.classList.toggle('open');
 
+    const isOpen = menu.classList.contains('open');
+
+  if (isOpen) {
+    menu.classList.remove('open');
+    overlay.classList.remove('show');
+    btn.classList.remove('active');
+  } else {
+    menu.classList.add('open');
+    overlay.classList.add('show');
+    btn.classList.add('active');
+  }
     overlay.classList.toggle('show', isOpen);
-    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+    btn.classList.toggle('active', isOpen);
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   }
 
   function closeMenu() {
     document.getElementById('navMenu').classList.remove('open');
     document.getElementById('menuOverlay').classList.remove('show');
+    document.querySelector('.hamburger').classList.remove('active');
     document.querySelector('.hamburger').setAttribute('aria-expanded', 'false');
   }
 
@@ -862,7 +958,9 @@ iframe {
       }
     });
   });
-
+  document.querySelectorAll('.nav-buttons button').forEach(btn => {
+  btn.addEventListener('click', closeMenu);
+  });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 
