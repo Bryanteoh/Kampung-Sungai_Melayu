@@ -6,8 +6,12 @@
 <title>Eco Tourism Kampung Sungai Melayu</title>
 
 <style>
-body {
+/* LOCK HORIZONTAL SCROLL */
+html, body {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* This stops the left/right shifting */
   font-family: Arial, sans-serif;
   background: #eef5f1;
   color: #2e2e2e;
@@ -24,6 +28,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
+  box-sizing: border-box; /* Keeps navbar width exact */
 }
 
 .logo {
@@ -160,7 +165,6 @@ body {
   color: #2f6f4e;
 }
 
-/* Only lift cards on the home page, not the flip container */
 #home .card:hover {
   transform: translateY(-6px) scale(1.01);
   box-shadow:
@@ -210,7 +214,6 @@ iframe {
   cursor: pointer;
 }
 
-/* Desktop: hover to flip */
 @media (hover: hover) {
   .flip-card:hover {
     transform: rotateY(180deg) translateY(-6px);
@@ -220,7 +223,6 @@ iframe {
   }
 }
 
-/* Mobile: tap to flip via JS class */
 .flip-card.flipped {
   transform: rotateY(180deg);
 }
@@ -279,7 +281,6 @@ iframe {
   box-shadow: 0 15px 35px rgba(0,0,0,0.15);
 }
 
-/* IMAGE */
 .img-box {
   overflow: hidden;
 }
@@ -295,13 +296,11 @@ iframe {
   transform: scale(1.1);
 }
 
-/* CONTENT */
 .content {
   padding: 15px;
   text-align: left;
 }
 
-/* BADGE */
 .badge {
   display: inline-block;
   background: #e0f7e9;
@@ -325,7 +324,6 @@ iframe {
   margin-top: 20px;
 }
 
-/* INFO CARDS */
 .info-card {
   background: white;
   padding: 15px;
@@ -339,7 +337,6 @@ iframe {
   color: #1f5e3b;
 }
 
-/* WHATSAPP BUTTON */
 .whatsapp-btn {
   display: block;
   text-align: center;
@@ -352,7 +349,6 @@ iframe {
   font-weight: bold;
 }
 
-/* FORM */
 .contact-form {
   background: white;
   padding: 20px;
@@ -386,61 +382,36 @@ iframe {
   font-size: 15px;
 }
 
-/* MOBILE */
-/* MOBILE */
+/* MOBILE RESPONSIVE */
 @media (max-width: 600px) {
-
   .navbar {
-    flex-direction: column;
-    gap: 8px;
-    padding: 10px;
+    flex-direction: row; /* Keeping logo and burger side-by-side */
+    justify-content: space-between;
+    padding: 10px 20px;
   }
 
   .nav-buttons {
+    position: fixed; /* Fixed prevents shifting the background */
+    top: 0;
+    right: -100%; /* Hidden off-screen */
+    width: 250px;
+    height: 100vh;
+    background: rgba(31, 45, 36, 0.98);
+    flex-direction: column;
     justify-content: center;
+    padding: 20px;
+    gap: 15px;
+    transition: 0.4s ease-in-out;
+    z-index: 99;
+    border-radius: 0;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.3);
   }
 
-  .navbar button {
-    padding: 7px 10px;
-    font-size: 12px;
+  .menu-toggle:checked ~ .nav-buttons {
+    right: 0; /* Slide in menu */
   }
 
-  .hero-overlay h1 {
-    font-size: 24px;
-  }
-
-  .hero-overlay p {
-    font-size: 14px;
-  }
-
-  .page-title h1 {
-    font-size: 24px;
-  }
-
-  .card {
-    width: 95%;
-    padding: 15px;
-  }
-
-  .flip-card {
-    width: 85vw;
-    height: 260px;
-  }
-
-  .services-grid {
-    grid-template-columns: 1fr;
-    width: 95%;
-  }
-
-  .contact-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  iframe {
-    height: 250px;
-  }
-
-  /* HAMBURGER */
+  /* HAMBURGER STYLING */
   .menu-toggle {
     display: none;
   }
@@ -450,6 +421,7 @@ iframe {
     flex-direction: column;
     gap: 5px;
     cursor: pointer;
+    z-index: 100;
   }
 
   .hamburger span {
@@ -457,42 +429,28 @@ iframe {
     height: 3px;
     background: white;
     border-radius: 3px;
+    transition: 0.3s;
   }
 
-  .nav-buttons {
-    position: absolute;
-    top: 100%;
-    right: -100%;
-    width: 200px;
-    background: rgba(31, 45, 36, 0.98);
-    flex-direction: column;
-    padding: 20px;
-    gap: 15px;
-    transition: 0.4s;
-    border-radius: 0 0 0 15px;
-  }
-
-  .menu-toggle:checked ~ .nav-buttons {
-    right: 0;
-  }
-
-  .menu-toggle:checked ~ .hamburger span:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
-  }
-
-  .menu-toggle:checked ~ .hamburger span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .menu-toggle:checked ~ .hamburger span:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-  }
+  /* Hamburger to X transform */
+  .menu-toggle:checked ~ .hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .menu-toggle:checked ~ .hamburger span:nth-child(2) { opacity: 0; }
+  .menu-toggle:checked ~ .hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
   .navbar button {
     width: 100%;
     font-size: 16px;
     padding: 12px;
   }
+
+  .hero-overlay h1 { font-size: 24px; }
+  .hero-overlay p { font-size: 14px; }
+  .page-title h1 { font-size: 24px; }
+  .card { width: 95%; padding: 15px; }
+  .flip-card { width: 85vw; height: 260px; }
+  .services-grid { grid-template-columns: 1fr; width: 95%; }
+  .contact-wrapper { grid-template-columns: 1fr; }
+  iframe { height: 250px; }
 }
 </style>
 </head>
