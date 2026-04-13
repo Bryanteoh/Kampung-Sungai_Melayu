@@ -396,43 +396,50 @@ iframe {
 
 /* MOBILE */
 @media (max-width: 600px) {
-  .navbar {
-    flex-direction: row; /* Keep logo and hamburger on one line */
-    justify-content: space-between;
+
+  /* HERO */
+  .hero-overlay h1 {
+    font-size: 26px;
+  }
+
+  .hero-overlay p {
+    font-size: 14px;
+  }
+
+  /* CARDS */
+  .card {
+    width: 95%;
     padding: 15px;
   }
 
-  .hamburger {
-    display: block; 
-    z-index: 1001; /* Ensure it stays above the menu */
+  /* FLIP CARDS */
+  .flip-card {
+    width: 90vw;
+    height: 300px;
   }
 
-  .nav-buttons {
-    display: none; /* Hidden by default */
-    flex-direction: column;
-    position: absolute;
-    top: 100%; /* Sits right below the navbar */
-    left: 0;
-    width: 100%;
-    background: rgba(31, 45, 36, 0.98);
-    padding: 20px;
-    gap: 15px;
-    box-sizing: border-box;
-    border-bottom: 2px solid #4caf50;
+  /* SERVICES GRID */
+  .services-grid {
+    grid-template-columns: 1fr;
+    width: 95%;
   }
 
-  /* This class is toggled by JavaScript */
-  .nav-buttons.show {
-    display: flex !important;
+  /* CONTACT FIX */
+  .contact-wrapper {
+    grid-template-columns: 1fr;
   }
 
+  /* INFO CARDS */
+  .info-card {
+    font-size: 14px;
+  }
+
+  /* NAV BUTTONS already ok but improve spacing */
   .nav-buttons button {
-    width: 100%;
-    text-align: center;
-    padding: 12px;
-    font-size: 16px;
+    font-size: 15px;
   }
 }
+
 </style>
 </head>
 
