@@ -386,6 +386,14 @@ iframe {
   font-size: 15px;
 }
 
+/* HAMBURGER ICON (ONLY MOBILE) */
+.hamburger {
+  display: none;
+  font-size: 26px;
+  color: white;
+  cursor: pointer;
+}
+
 /* MOBILE */
 @media (max-width: 600px) {
 
@@ -438,6 +446,28 @@ iframe {
   iframe {
     height: 250px;
   }
+  .hamburger {
+    display: block; /* ONLY show on mobile */
+  }
+
+  .nav-buttons {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: rgba(31, 45, 36, 0.98);
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+
+  .nav-buttons.show {
+    display: flex;
+  }
+
+  .nav-buttons button {
+    width: 100%;
+    text-align: left;
+  }
 }
 </style>
 </head>
@@ -447,7 +477,10 @@ iframe {
 <!-- NAVBAR -->
 <div class="navbar">
   <div class="logo">🌿 Kampung Sungai Melayu</div>
-  <div class="nav-buttons">
+
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+  <div class="nav-buttons" id="navButtons">
     <button onclick="showPage('home')">Home</button>
     <button onclick="showPage('about')">About</button>
     <button onclick="showPage('services')">Locals</button>
@@ -499,7 +532,7 @@ iframe {
 
       <div class="flip-card">
         <div class="flip-front">
-          <img src="https://www.malaysia.travel/webroot/articles/peekintomalaysia/15894e711.jpg"
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjMg0aX7Anzs-UHgNVXBUrrpC2GjZh6uI9WQ&s"
                style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius:14px;">
           <div style="position:absolute; bottom:15px; width:100%; text-align:center; color:white; font-size:18px; font-weight:bold; text-shadow:0 2px 6px rgba(0,0,0,0.6);">🏡 History</div>
         </div>
