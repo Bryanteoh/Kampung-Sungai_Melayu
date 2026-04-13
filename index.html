@@ -387,6 +387,7 @@ iframe {
 }
 
 /* MOBILE */
+/* MOBILE */
 @media (max-width: 600px) {
 
   .navbar {
@@ -439,74 +440,59 @@ iframe {
     height: 250px;
   }
 
-  /* --- NEW HAMBURGER STYLES --- */
+  /* HAMBURGER */
+  .menu-toggle {
+    display: none;
+  }
 
-/* Hide checkbox */
-.menu-toggle {
-  display: none;
-}
-
-/* Hamburger Icon Design */
-.hamburger {
-  display: none; /* Hidden on desktop */
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  z-index: 101;
-}
-
-.hamburger span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background: white;
-  border-radius: 3px;
-  transition: 0.3s;
-}
-
-/* MOBILE RESPONSIVE NAVIGATION */
-@media (max-width: 600px) {
   .hamburger {
-    display: flex; /* Show on mobile */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+  }
+
+  .hamburger span {
+    width: 25px;
+    height: 3px;
+    background: white;
+    border-radius: 3px;
   }
 
   .nav-buttons {
     position: absolute;
     top: 100%;
-    right: -100%; /* Hidden off-screen */
+    right: -100%;
     width: 200px;
     background: rgba(31, 45, 36, 0.98);
     flex-direction: column;
     padding: 20px;
     gap: 15px;
-    transition: 0.4s ease-in-out;
+    transition: 0.4s;
     border-radius: 0 0 0 15px;
-    box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
   }
 
-  /* When checkbox is checked, slide menu in */
   .menu-toggle:checked ~ .nav-buttons {
     right: 0;
   }
 
-  /* Hamburger Animation (Optional: turns into an 'X') */
   .menu-toggle:checked ~ .hamburger span:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
   }
+
   .menu-toggle:checked ~ .hamburger span:nth-child(2) {
     opacity: 0;
   }
+
   .menu-toggle:checked ~ .hamburger span:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
   }
-  
+
   .navbar button {
     width: 100%;
-    text-align: center;
     font-size: 16px;
     padding: 12px;
   }
-}
 }
 </style>
 </head>
