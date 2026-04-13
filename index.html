@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eco Tourism Kampung Sungai Melayu</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #eef5f1;
+  color: #2e2e2e;
+}
+
+/* NAVBAR */
+.navbar {
+  background: rgba(31, 45, 36, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.navbar button {
+  background: transparent;
+  border: 1px solid #4caf50;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 13px;
+}
+
+.navbar button:hover {
+  background: #4caf50;
+}
+
+/* PAGE */
+.page {
+  display: none;
+  animation: fade 0.4s ease-in-out;
+  padding-bottom: 40px;
+}
+
+.active {
+  display: block;
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* HERO */
+.hero-banner {
+  height: 85vh;
+  background: url('https://apicms.thestar.com.my/uploads/images/2026/03/12/3808604.webp') center/cover no-repeat;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: zoomBg 20s ease-in-out infinite alternate;
+}
+
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.hero-overlay {
+  position: relative;
+  color: white;
+  text-align: center;
+  z-index: 2;
+  padding: 0 20px;
+}
+
+.hero-overlay h1 {
+  font-size: 42px;
+  margin: 0 0 10px;
+}
+
+.hero-overlay p {
+  font-size: 18px;
+  margin: 0;
+}
+
+.hero-overlay button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #4caf50;
+  border: none;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+@keyframes zoomBg {
+  from { background-size: 100%; }
+  to { background-size: 110%; }
+}
+
+/* PAGE TITLES */
+.page-title {
+  text-align: center;
+  margin-top: 30px;
+  padding: 0 15px;
+}
+
+.page-title h1 {
+  color: #1f5e3b;
+  font-size: 32px;
+}
+
+.page-title p {
+  color: #555;
+}
+
+/* CARD */
+.card {
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto;
+  position: relative;
+  border: 2px solid #a5d6a7;
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.08),
+    0 0 15px rgba(76, 175, 80, 0.2);
+  transition: 0.3s;
+  box-sizing: border-box;
+}
+
+.card h3 {
+  margin-bottom: 8px;
+  color: #2f6f4e;
+}
+
+/* Only lift cards on the home page, not the flip container */
+#home .card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow:
+    0 15px 35px rgba(0,0,0,0.12),
+    0 0 25px rgba(76, 175, 80, 0.35);
+}
+
+/* MAP */
+iframe {
+  width: 100%;
+  height: 450px;
+  border-radius: 14px;
+  border: none;
+}
+
+/* ANIMATION */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.8s;
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* FLIP CARDS */
+.flip-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.flip-card {
+  width: 340px;
+  height: 320px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: 0.8s;
+  border-radius: 18px;
+  border: 2px solid #a5d6a7;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.08),
+    0 0 12px rgba(76, 175, 80, 0.2);
+  cursor: pointer;
+}
+
+/* Desktop: hover to flip */
+@media (hover: hover) {
+  .flip-card:hover {
+    transform: rotateY(180deg) translateY(-6px);
+    box-shadow:
+      0 15px 30px rgba(0,0,0,0.12),
+      0 0 20px rgba(76, 175, 80, 0.35);
+  }
+}
+
+/* Mobile: tap to flip via JS class */
+.flip-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  backface-visibility: hidden;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.flip-front {
+  background: #e8f5e9;
+  color: #1f5e3b;
+  font-weight: bold;
+  font-size: 18px;
+  overflow: hidden;
+}
+
+.flip-back {
+  background: white;
+  transform: rotateY(180deg);
+  color: #444;
+  overflow-y: auto;
+}
+
+/* GRID */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  width: 90%;
+  max-width: 1100px;
+  margin: 30px auto;
+}
+
+/* SERVICE CARD */
+.service-card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  transition: 0.3s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  cursor: pointer;
+}
+
+.service-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+/* IMAGE */
+.img-box {
+  overflow: hidden;
+}
+
+.img-box img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: 0.4s;
+}
+
+.service-card:hover img {
+  transform: scale(1.1);
+}
+
+/* CONTENT */
+.content {
+  padding: 15px;
+  text-align: left;
+}
+
+/* BADGE */
+.badge {
+  display: inline-block;
+  background: #e0f7e9;
+  color: #1b5e20;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+/* CONTACT */
+.contact-section {
+  padding: 40px 20px;
+  background: #f4f7f5;
+}
+
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* INFO CARDS */
+.info-card {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.info-card h3 {
+  margin-bottom: 6px;
+  color: #1f5e3b;
+}
+
+/* WHATSAPP BUTTON */
+.whatsapp-btn {
+  display: block;
+  text-align: center;
+  background: #25D366;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* FORM */
+.contact-form {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact-form button {
+  background: #1f5e3b;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+
+  .navbar {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .nav-buttons {
+    justify-content: center;
+  }
+
+  .navbar button {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .hero-overlay h1 {
+    font-size: 24px;
+  }
+
+  .hero-overlay p {
+    font-size: 14px;
+  }
+
+  .page-title h1 {
+    font-size: 24px;
+  }
+
+  .card {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .flip-card {
+    width: 85vw;
+    height: 260px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    width: 95%;
+  }
+
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  iframe {
+    height: 250px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo">🌿 Kampung Sungai Melayu</div>
+  <div class="nav-buttons">
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('about')">About</button>
+    <button onclick="showPage('services')">Locals</button>
+    <button onclick="showPage('contact')">Contact</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="hero-banner">
+    <div class="hero-overlay">
+      <h1>Kampung Sungai Melayu</h1>
+      <p>Explore nature, culture & river life 🌿🚤</p>
+      <button onclick="showPage('about')">Explore More</button>
+    </div>
+  </div>
+
+  <div class="card fade-in">
+    <h3>🌿 Why Visit?</h3>
+    <p>Peaceful eco-tourism village with mangroves and river life.</p>
+  </div>
+
+  <div class="card fade-in">
+    <h3>📍 Attractions</h3>
+    <ul>
+      <li>🚤 Boat tours</li>
+      <li>🌳 Mangrove forest</li>
+      <li>🎣 Fishing</li>
+      <li>🌅 Sunset view</li>
+    </ul>
+  </div>
+
+  <div class="card fade-in">
+    <h3>📍 Map</h3>
+    <iframe src="https://www.google.com/maps?q=Eco%20Tourism%20Kampung%20Sungai%20Melayu&output=embed"></iframe>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about" class="page">
+
+  <div class="page-title">
+    <h1>Kampung Sungai Melayu</h1>
+    <p>Learn about the village's history, culture and experiences</p>
+  </div>
+
+  <div class="card">
+    <div class="flip-container">
+
+      <div class="flip-card">
+        <div class="flip-front">
+          <img src="https://www.malaysia.travel/webroot/articles/peekintomalaysia/15894e711.jpg"
+               style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius:14px;">
+          <div style="position:absolute; bottom:15px; width:100%; text-align:center; color:white; font-size:18px; font-weight:bold; text-shadow:0 2px 6px rgba(0,0,0,0.6);">🏡 History</div>
+        </div>
+        <div class="flip-back">
+          <ul>
+            <li>Old Malay fishing village in Johor, Malaysia</li>
+            <li>Started by people who depended on fishing and mangroves</li>
+            <li>Developed into a small village with wooden houses</li>
+            <li>Life stayed simple and closely connected to nature for many years</li>
+            <li>Now known for eco-tourism and mangrove tours</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-front">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKu-xXxLKsOPkbRE001vPPzP0CEjYZE4LwHw&s"
+               style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius:14px;">
+          <div style="position:absolute; bottom:15px; width:100%; text-align:center; color:white; font-size:18px; font-weight:bold; text-shadow:0 2px 6px rgba(0,0,0,0.6);">🎯 Activities</div>
+        </div>
+        <div class="flip-back">
+          <ul>
+            <li>Boat tours</li>
+            <li>Fishing activities</li>
+            <li>Mangrove walks</li>
+            <li>Sightseeing</li>
+            <li>Crab Catching</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-front">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwlVCOGzf0GdfmQkzWj3teQ9lUzfkTKiasaw&s"
+               style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius:14px;">
+          <div style="position:absolute; bottom:15px; width:100%; text-align:center; color:white; font-size:18px; font-weight:bold; text-shadow:0 2px 6px rgba(0,0,0,0.6);">🎭 Culture</div>
+        </div>
+        <div class="flip-back">
+          <ul>
+            <li>Congkak</li>
+            <li>Ceper</li>
+            <li>Community-based village living</li>
+            <li>Zapin</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-front">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrpCO3mDhZuiRPe3ajJ4EBMNkEA4dJdsAOKA&s"
+               style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius:14px;">
+          <div style="position:absolute; bottom:15px; width:100%; text-align:center; color:white; font-size:18px; font-weight:bold; text-shadow:0 2px 6px rgba(0,0,0,0.6);">🍲 Food</div>
+        </div>
+        <div class="flip-back">
+          <ul>
+            <li>Asam Pedas</li>
+            <li>Ayam Ungkep</li>
+            <li>Messel Chips</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-front">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaTVFHRI7SAqb-L4QuV1XvY7vSYj-iPjw__g&s"
+               style="width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius:14px;">
+          <div style="position:absolute; bottom:15px; width:100%; text-align:center; color:white; font-size:18px; font-weight:bold; text-shadow:0 2px 6px rgba(0,0,0,0.6);">🚤 Tour</div>
+        </div>
+        <div class="flip-back">
+          <ul>
+            <li>Guided mangrove tour experience</li>
+            <li>Boat ride through rivers and forests</li>
+            <li>Buggy tour around Malay village</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div id="services" class="page">
+
+  <div class="page-title">
+    <h1>Locals Approved</h1>
+    <p>Authentic food and experiences recommended by locals</p>
+  </div>
+
+  <div class="services-grid">
+
+    <div class="service-card">
+      <div class="img-box">
+        <img src="https://images.slurrp.com/prod/recipe_images/transcribe/nan/Asam_Pedas_Ikan_Pari.webp">
+      </div>
+      <div class="content">
+        <span class="badge">Asam Pedas</span>
+        <h3>Asam Pedas</h3>
+        <p>Rich, tangy Johor-style spicy dish loved by locals.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="img-box">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxrBj6Tr0Hs0j_2aKWZdpvRp16U6W6vdIWwA&s">
+      </div>
+      <div class="content">
+        <span class="badge">Belacan</span>
+        <h3>Belacan</h3>
+        <p>Fermented shrimp paste with strong aroma and deep flavour.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="img-box">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRDqrYsBpFx2mxfAXvcD4uHLMW9ekXcNUNCQ&s">
+      </div>
+      <div class="content">
+        <span class="badge">Mussel Chips</span>
+        <h3>Mussel Chips</h3>
+        <p>Crispy seafood snack with a unique salty taste.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="img-box">
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*5czyTDeqtSmdnNXhF2PXZw.jpeg">
+      </div>
+      <div class="content">
+        <span class="badge">Batu Seremban</span>
+        <h3>Batu Seremban</h3>
+        <p>Batu Seremban is a traditional game where players toss and catch small stones or beanbags in stages that test hand-eye coordination.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="img-box">
+        <img src="https://assets.nst.com.my/images/articles/ceper_1584524443.jpg">
+      </div>
+      <div class="content">
+        <span class="badge">Ceper</span>
+        <h3>Ceper</h3>
+        <p>Ceper is a simple game where players flick bottle caps to hit targets or reach a goal area with accuracy.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="img-box">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI8VL9-SDY3OACVTi8x48C8_gvgJUZnwbFgA&s">
+      </div>
+      <div class="content">
+        <span class="badge">Congkak</span>
+        <h3>Congkak</h3>
+        <p>Congkak is a strategy board game where two players move seeds around holes on a board to collect the most in their home store.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="img-box">
+        <img src="https://i0.wp.com/birdwatching.asia/wp-content/uploads/2024/05/sungai-melayu-mangroves.jpg?resize=640%2C402&ssl=1">
+      </div>
+      <div class="content">
+        <span class="badge">Sightseeing</span>
+        <h3>Sightseeing</h3>
+        <p>Sight seeing in Kampung Sungai Melayu where visitors enjoy views of mangroves, rivers, and the natural village environment.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="img-box">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXTxJe_E0Q8sw3tt7UxE6WPJ9nwJDAovZBFg&s">
+      </div>
+      <div class="content">
+        <span class="badge">Boat Riding</span>
+        <h3>Boat Riding</h3>
+        <p>Visitors travel through the river and mangrove areas to explore the village and its ecosystem.</p>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <div class="img-box">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGvjZxhTRLd4mb-quNG5js4eqcv2L27p2quQ&s">
+      </div>
+      <div class="content">
+        <span class="badge">Crab Catching</span>
+        <h3>Crab Catching</h3>
+        <p>Hands-on activity where visitors learn to catch crabs in the mangrove areas using simple traditional methods.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="page contact-section">
+
+  <div class="page-title">
+    <h1>Contact Us</h1>
+    <p>We're here to help you plan your visit to Kampung Sungai Melayu</p>
+  </div>
+
+  <div class="contact-wrapper">
+
+    <div class="contact-info">
+
+      <div class="info-card">
+        <h3>📍 Location</h3>
+        <p>Kampung Sungai Melayu, Johor, Malaysia</p>
+      </div>
+
+      <div class="info-card">
+        <h3>📞 Phone / WhatsApp</h3>
+        <p><a href="tel:+60123456789">+60 12-345 6789</a></p>
+      </div>
+
+      <div class="info-card">
+        <h3>📧 Email</h3>
+        <p><a href="mailto:info@kampungsungaimelayu.com">info@kampungsungaimelayu.com</a></p>
+      </div>
+
+      <div class="info-card">
+        <h3>🕒 Operating Hours</h3>
+        <p>Daily: 8:00 AM – 6:00 PM</p>
+      </div>
+
+      <a class="whatsapp-btn" href="https://wa.me/60123456789" target="_blank">
+        💬 Chat on WhatsApp
+      </a>
+
+    </div>
+
+    <div class="contact-form">
+
+      <h3>Send Us a Message</h3>
+
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// Tap to flip on touchscreens
+document.querySelectorAll('.flip-card').forEach(card => {
+  card.addEventListener('click', () => {
+    card.classList.toggle('flipped');
+  });
+});
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('show');
+    }
+  });
+});
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
