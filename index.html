@@ -396,77 +396,41 @@ iframe {
 
 /* MOBILE */
 @media (max-width: 600px) {
-
   .navbar {
-    flex-direction: column;
-    gap: 8px;
-    padding: 10px;
-  }
-
-  .nav-buttons {
-    justify-content: center;
-  }
-
-  .navbar button {
-    padding: 7px 10px;
-    font-size: 12px;
-  }
-
-  .hero-overlay h1 {
-    font-size: 24px;
-  }
-
-  .hero-overlay p {
-    font-size: 14px;
-  }
-
-  .page-title h1 {
-    font-size: 24px;
-  }
-
-  .card {
-    width: 95%;
+    flex-direction: row; /* Keep logo and hamburger on one line */
+    justify-content: space-between;
     padding: 15px;
   }
 
-  .flip-card {
-    width: 85vw;
-    height: 260px;
-  }
-
-  .services-grid {
-    grid-template-columns: 1fr;
-    width: 95%;
-  }
-
-  .contact-wrapper {
-    grid-template-columns: 1fr;
-  }
-
-  iframe {
-    height: 250px;
-  }
   .hamburger {
-    display: block; /* ONLY show on mobile */
+    display: block; 
+    z-index: 1001; /* Ensure it stays above the menu */
   }
 
   .nav-buttons {
-    display: none;
+    display: none; /* Hidden by default */
     flex-direction: column;
+    position: absolute;
+    top: 100%; /* Sits right below the navbar */
+    left: 0;
     width: 100%;
     background: rgba(31, 45, 36, 0.98);
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 10px;
+    padding: 20px;
+    gap: 15px;
+    box-sizing: border-box;
+    border-bottom: 2px solid #4caf50;
   }
 
+  /* This class is toggled by JavaScript */
   .nav-buttons.show {
-    display: flex;
+    display: flex !important;
   }
 
   .nav-buttons button {
     width: 100%;
-    text-align: left;
+    text-align: center;
+    padding: 12px;
+    font-size: 16px;
   }
 }
 </style>
@@ -804,6 +768,34 @@ const observer = new IntersectionObserver(entries => {
 });
 
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+function toggleMenu() {
+  const nav = document.getElementById('navButtons');
+  nav.classList.toggle('show');
+}
+
+// Navigation Function
+function showPage(pageId) {
+  // 1. Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  
+  // 2. Show the requested page
+  document.getElementById(pageId).classList.add('active');
+  
+  // 3. Scroll to top
+  window.scrollTo(0, 0);
+
+  // 4. CLOSE THE MENU after clicking a link (The Fix!)
+  const nav = document.getElementById('navButtons');
+  nav.classList.remove('show');
+}
+
+// Touch support for flip cards
+document.querySelectorAll('.flip-card').forEach(card => {
+  card.addEventListener('click', function() {
+    this.classList.toggle('flipped');
+  });
+});
 </script>
 
 </body>
